@@ -2,7 +2,7 @@ var items = null;
 var out = null;
 
 var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=?';
-var RETRIEVER = 'http://localhost/~moto/retriever.cgi';
+var RETRIEVER = 'http://localhost/~moto/idavailability/retriever.cgi';
 var NOT_FOUND = '404';
 
 // debug stuff
@@ -29,10 +29,16 @@ function checkId() {
     var url = items[i].data.urlToCheck + id;
     debug(url);
     $.get(RETRIEVER, {'url':url}, function(data) {
-       debug(data);
+       //debug(data);
        if (NOT_FOUND == data) {
          debug('not found');
-         count++;
+       } else {
+         search = data.evaluate(items[i].data.condition, data, null, 7, null)
+         if (0 < search.snapshotLength) {
+           debug('xpath hit');
+         } else {
+           count++;
+         }
        }
     });
   }
