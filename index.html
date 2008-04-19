@@ -6,15 +6,21 @@
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link href="style.css" rel="stylesheet" type="text/css" />
   <title>ID Availability</title>
+  <!-- <script type="text/javascript" src="http://svn.coderepos.org/share/lang/javascript/javascript-xpath/trunk/release/javascript-xpath-latest.js"></script> -->
+  <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="idavailability.js"></script>
   <script type="text/javascript">
+    $(document).ready(function() {
+      bootstrap();
+    });
   </script>
 </head>
 <body>
   <h1>ID Availability</h1>
   <p>Check the availability of your ID for various sites.</p>
-  <form>
+  <form onsubmit="return checkId();">
     <input type="text" name="id" />
     <input type="submit" value="check !" />
   </form>
+  <div id="out"></div>
 </body>
