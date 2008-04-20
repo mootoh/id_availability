@@ -3,11 +3,28 @@ body {
   padding: 0;
 }
 
+a:link {
+  color: #9cf;
+}
+ 
+a:visited {
+  color: #9cf;
+}
+  
+a:hover {
+  color: #fff;
+}
+
 div#head {
   margin: 0;
   padding: 0;
   width:100%;
   background-color: #036;
+}
+
+div#head div#menu {
+  float: right;
+  text-align: right;
 }
 
 div#head h1 {
@@ -29,7 +46,7 @@ div.site {
   background-color: #bbb;
   color: #036;
   clear: left;
-  width: 240px;
+  width: 128px;
   margin: 8px 8px 8px 32px;
   padding: 8px;
 }
