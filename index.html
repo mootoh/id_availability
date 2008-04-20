@@ -20,19 +20,21 @@
   <h1>ID Availability</h1>
 </div>
 <div id="main">
-  <p>Check the availability of your ID for various sites.</p>
-  <form onsubmit="return checkId();">
-    <label>ID: </label>
-    <input type="text" name="id" />
-    <input type="button" value="check !" onclick="return checkId();" />
-  </form>
+    <div id="input">
+    <p>Check the availability of your ID for various sites.</p>
+    <form onsubmit="return checkId();">
+      <label>ID: </label>
+      <input type="text" name="id" />
+      <input type="button" value="check !" onclick="return checkId();" />
+    </form>
+  </div>
   <div id="out"></div>
   <div id="result_out">
-    <p>Results:
       <span id="result"></span>
-    </p>
   </div>
-  <p>Sites:</p>
+  <h2>Sites:</h2>
+  <p><span style="color:green; background-color:green">&nbsp;&nbsp;</span> is available, and
+     <span style="color:red; background-color:red">&nbsp;&nbsp;</span> has that ID already.</p>
   <div id="sites"></div>
 </div>
 </body>

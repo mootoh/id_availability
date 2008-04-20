@@ -5,6 +5,7 @@ var result = null;
 var availableCount = 0;
 var totalCount = 0;
 var count = 0;
+var id = '';
 
 var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=?';
 //var ITEMS_URL = 'http://localhost/~moto/idavailability/sites.json'; // for local test
@@ -39,9 +40,6 @@ var Site = function(name, data) {
   site_area.appendChild(this.div);
 }
 
-Site.prototype.show = function() {
-  debug(this.name);
-}
 
 /*
 Site.prototype.ok = 'green';
@@ -51,6 +49,7 @@ Site.prototype.ng = '#666';
 Site.prototype.check = function(id) {
   var url = this.data.urlToCheck + id;
   var self = this;
+  self.div.style.backgroundColor = '#bbb';
 
   $.get(RETRIEVER, {'url':url}, function(html) {
      if (NOT_FOUND == html) {
@@ -100,9 +99,10 @@ function bootstrap() {
 
 function checkId() {
   availableCount = 0;
+  count = 0;
 
-  var id = document.forms[0]['id'].value;
-  debug('checking ' + id + '...');
+  id = document.forms[0]['id'].value;
+  debug('checking ' + id + ' from ' + totalCount + ' sites...');
 
   for (var i=0; i<items.length; i++) {
     items[i].check(id);
@@ -112,8 +112,9 @@ function checkId() {
 }
 
 function updateResult() {
-  result.innerHTML = availableCount + '/' + items.length;
+  //result.innerHTML = availableCount + '/' + items.length;
   if (totalCount == count) {
-    debug('done.');
+    debug('done.<br /> <span class="id">' + id + ' </span> ' +
+      'is <span class="availability">' + parseInt(100 * availableCount / items.length) + '</span>% available.');
   }
 }

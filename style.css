@@ -21,8 +21,12 @@ div#main {
   padding: 0 32px;
 }
 
+div#input {
+  border-bottom: #036 solid 1px;
+}
+
 div.site {
-  background-color: #999;
+  background-color: #bbb;
   color: #036;
   clear: left;
   width: 240px;
@@ -54,3 +58,11 @@ div.site span.ng {
   color: red;
 }
 */
+
+span.id {
+  font-size: 1.6em;
+}
+
+span.availability {
+  font-size: 1.8em;
+}
