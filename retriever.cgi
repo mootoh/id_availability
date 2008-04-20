@@ -8,5 +8,5 @@ url = cgi['url']
 begin
   puts open(url).read
 rescue OpenURI::HTTPError
-  print '404'
+  print 'null'
 end

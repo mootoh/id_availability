@@ -1,47 +1,119 @@
-var items = null;
+var items = [];
 var out = null;
+var site_area = null;
+var result = null;
+var availableCount = 0;
+var totalCount = 0;
+var count = 0;
 
 var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=?';
+//var ITEMS_URL = 'http://localhost/~moto/idavailability/sites.json'; // for local test
 var RETRIEVER = 'http://localhost/~moto/idavailability/retriever.cgi';
-var NOT_FOUND = '404';
+var NOT_FOUND = 'null';
 
 // debug stuff
 function debug(msg) {
-  out.innerHTML += msg + '<br />';
+  out.innerHTML = msg + '<br />';
+}
+
+var Site = function(name, data) {
+  this.name = name;
+  this.data = data;
+  this.div = $('<div/>');
+  this.div  = document.createElement('div');
+  this.div.id = 'site_' + name;
+  this.div.className = 'site';
+
+  if (data.icon != '') {
+    var icon = document.createElement('img');
+    icon.src = data.icon;
+    this.div.appendChild(icon);
+  }
+
+  var msg = document.createElement('p');
+  msg.className = 'msg';
+  msg.innerHTML = name; // TODO: 1. should use something else than innerHTML.
+  this.div.appendChild(msg);
+  this.msg = msg;
+
+  site_area.appendChild(this.div);
+}
+
+Site.prototype.show = function() {
+  debug(this.name);
+}
+
+/*
+Site.prototype.ok = 'green';
+Site.prototype.ng = '#666';
+*/
+
+Site.prototype.check = function(id) {
+  var url = this.data.urlToCheck + id;
+  var self = this;
+
+  $.get(RETRIEVER, {'url':url}, function(html) {
+     if (NOT_FOUND == html) {
+       availableCount++;
+
+       /*
+       var ok = document.createElement('span');
+       ok.className = 'ok';
+       ok.innerHTML = 'OK'; // TODO: 1.
+       self.msg.appendChild(ok);
+       */
+       self.div.style.backgroundColor = 'green';
+
+     } else {
+       //search = data.evaluate(items[i].condition, data, null, 7, null)
+       //if (0 < search.snapshotLength) {
+         //debug('xpath hit');
+         //white.push(i);
+       //} else
+       {
+         self.div.style.backgroundColor = 'red';
+         /*
+         var ok = document.createElement('span');
+         ok.className = 'ng';
+         ok.innerHTML = 'NG'; // TODO: 1.
+         self.msg.appendChild(ok);
+         */
+       }
+     }
+     count++;
+     updateResult();
+  });
 }
 
 function bootstrap() {
-  $.getJSON(ITEMS_URL, function(data) {
-    items = data
-  });
   out = document.getElementById('out');
+  result = document.getElementById('result');
+  site_area = document.getElementById('sites');
+
+  $.getJSON(ITEMS_URL, function(sites) {
+    totalCount = sites.length;
+    for (var i=0; i<sites.length; i++) {
+      items.push(new Site(sites[i].name, sites[i].data));
+    }
+  });
 }
 
 function checkId() {
+  availableCount = 0;
+
   var id = document.forms[0]['id'].value;
   debug('checking ' + id + '...');
 
-  var count = 0;
-
   for (var i=0; i<items.length; i++) {
-    out.innerHTML += '  from ' + items[i].name + ': <br />';
-
-    var url = items[i].data.urlToCheck + id;
-    debug(url);
-    $.get(RETRIEVER, {'url':url}, function(data) {
-       //debug(data);
-       if (NOT_FOUND == data) {
-         debug('not found');
-       } else {
-         search = data.evaluate(items[i].data.condition, data, null, 7, null)
-         if (0 < search.snapshotLength) {
-           debug('xpath hit');
-         } else {
-           count++;
-         }
-       }
-    });
+    items[i].check(id);
   }
 
   return false;
+}
+
+function updateResult() {
+  result.innerHTML = availableCount + '/' + items.length;
+  if (totalCount == count) {
+    debug('done.');
+  }
 }

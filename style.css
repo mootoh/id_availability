@@ -1,2 +1,56 @@
 body {
+  margin: 0;
+  padding: 0;
 }
+
+div#head {
+  margin: 0;
+  padding: 0;
+  width:100%;
+  background-color: #036;
+}
+
+div#head h1 {
+  margin: 0;
+  padding: 32px;
+  color: #fff;
+  font-size: 2em;
+}
+
+div#main {
+  padding: 0 32px;
+}
+
+div.site {
+  background-color: #999;
+  color: #036;
+  clear: left;
+  width: 240px;
+  margin: 8px 8px 8px 32px;
+  padding: 8px;
+}
+
+div.site img {
+  float:left;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+}
+
+div.site p.msg {
+  margin: 0 0 0 32px;
+  padding: 0;
+  color: #fff;
+}
+
+/*
+div.site span.ok {
+  color: green;
+}
+
+div.site span.ng {
+  color: red;
+}
+*/
