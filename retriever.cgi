@@ -8,7 +8,7 @@ url  = cgi['url']
 cond = cgi['cond']
 
 begin
-  src = open(url).read
+  src = open(url, 'User-Agent' => 'IDAvailability Retriever').read
   if cond != ''
     cond = CGI.unescape(cond)
 
@@ -22,4 +22,6 @@ begin
   end
 rescue OpenURI::HTTPError
   print 'null'
+rescue => e
+  print e
 end
