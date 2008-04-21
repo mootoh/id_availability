@@ -7,10 +7,14 @@ var totalCount = 0;
 var count = 0;
 var id = '';
 
+var src = '';
+var cond = '';
+
 var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=?';
 //var ITEMS_URL = 'http://localhost/~moto/idavailability/sites.json'; // for local test
 var RETRIEVER = 'http://localhost/~moto/idavailability/retriever.cgi';
 var NOT_FOUND = 'null';
+var FOUND     = 'found';
 
 // debug stuff
 function debug(msg) {
@@ -50,8 +54,12 @@ Site.prototype.check = function(id) {
   var url = this.data.urlToCheck + id;
   var self = this;
   self.div.style.backgroundColor = '#bbb';
+  params = {'url':url};
+  if (this.data.condition != '') {
+    params['cond'] = this.data.condition;
+  }
 
-  $.get(RETRIEVER, {'url':url}, function(html) {
+  $.get(RETRIEVER, params, function(html) {
      if (NOT_FOUND == html) {
        availableCount++;
 
@@ -64,19 +72,25 @@ Site.prototype.check = function(id) {
        self.div.style.backgroundColor = 'green';
 
      } else {
-       //search = data.evaluate(items[i].condition, data, null, 7, null)
-       //if (0 < search.snapshotLength) {
-         //debug('xpath hit');
-         //white.push(i);
-       //} else
-       {
-         self.div.style.backgroundColor = 'red';
-         /*
-         var ok = document.createElement('span');
-         ok.className = 'ng';
-         ok.innerHTML = 'NG'; // TODO: 1.
-         self.msg.appendChild(ok);
-         */
+       if (FOUND == html) {
+         //search = data.evaluate(items[i].condition, data, null, 7, null)
+         //if (0 < search.snapshotLength) {
+           //debug('xpath hit');
+           //white.push(i);
+         //} else
+         {
+           self.div.style.backgroundColor = 'red';
+           /*
+           var ok = document.createElement('span');
+           ok.className = 'ng';
+           ok.innerHTML = 'NG'; // TODO: 1.
+           self.msg.appendChild(ok);
+           */
+         }
+       } else {
+         // check XPath
+         src = html;
+         cond = self.data.condition;
        }
      }
      count++;
