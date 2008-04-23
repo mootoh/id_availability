@@ -1,27 +1,31 @@
 #!/usr/bin/env ruby
 require 'cgi'
-require 'open-uri'
+require 'uri'
+require 'net/http'
+Net::HTTP.version_1_2 # magic
 
 print "Content-type:text/html\n\n"
 cgi = CGI.new
-url  = cgi['url']
+url  = URI.parse(cgi['url'])
 cond = cgi['cond']
 
-begin
-  src = open(url, 'User-Agent' => 'IDAvailability Retriever').read
-  if cond != ''
-    cond = CGI.unescape(cond)
-
-    require 'rubygems'
-    require 'hpricot'
-    doc = Hpricot(src)
-    result = doc.search(cond)
-    print result.size == 1 ? 'null' : 'found'
-  else
-    print 'found'
+response = Net::HTTP.start(url.host) do |http|
+  res = http.get(url.path, 'User-Agent' => 'IDAvailability Retriever')
+  unless res.is_a?(Net::HTTPSuccess)
+    print 'null'
+    exit
   end
-rescue OpenURI::HTTPError
-  print 'null'
-rescue => e
-  print e
+
+  if cond == ''
+    print 'found'
+    exit
+  end
+
+  cond = CGI.unescape(cond)
+
+  require 'rubygems'
+  require 'hpricot'
+  doc = Hpricot(res.body)
+  result = doc.search(cond)
+  print result.size == 1 ? 'null' : 'found'
 end
