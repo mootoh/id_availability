@@ -15,6 +15,7 @@ var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=
 var RETRIEVER = 'http://localhost/~moto/idavailability/retriever.cgi';
 var NOT_FOUND = 'null';
 var FOUND     = 'found';
+var ID_FIELD = '#{ID}';
 
 // debug stuff
 function debug(msg) {
@@ -51,7 +52,10 @@ Site.prototype.ng = '#666';
 */
 
 Site.prototype.check = function(id) {
-  var url = this.data.urlToCheck + id;
+  var url = this.data.urlToCheck;
+  var regex = new RegExp(ID_FIELD);
+  url = url.match(regex) ? url.replace(regex, id) : (url + id);
+
   var self = this;
   self.div.style.backgroundColor = '#bbb';
   params = {'url':url};
