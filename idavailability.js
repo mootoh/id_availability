@@ -25,7 +25,6 @@ function debug(msg) {
 var Site = function(name, data) {
   this.name = name;
   this.data = data;
-  this.div = $('<div/>');
   this.div  = document.createElement('div');
   this.div.id = 'site_' + name;
   this.div.className = 'site';

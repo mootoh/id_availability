@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family:'Lucida Grande',sans-serif;
 }
 
 a:link {
@@ -45,19 +46,19 @@ div#input {
 div.site {
   background-color: #bbb;
   color: #036;
-  clear: left;
-  width: 128px;
-  margin: 8px 8px 8px 32px;
+  margin: 8px;
   padding: 8px;
+  display: inline;
+  float: left;
 }
 
 div.site img {
-  float:left;
   border: none;
   margin: 0;
   padding: 0;
   width: 16px;
   height: 16px;
+  float: left;
 }
 
 div.site p.msg {
