@@ -15,7 +15,7 @@ var ITEMS_URL = 'http://wedata.net/databases/idAvailability/items.json?callback=
 var RETRIEVER = 'http://localhost/~moto/idavailability/retriever.cgi';
 var NOT_FOUND = 'null';
 var FOUND     = 'found';
-var ID_FIELD = '#{ID}';
+var ID_FIELD  = '#{ID}';
 
 // debug stuff
 function debug(msg) {
@@ -42,7 +42,7 @@ var Site = function(name, data) {
   this.msg = msg;
 
   site_area.appendChild(this.div);
-}
+};
 
 
 /*
@@ -52,54 +52,51 @@ Site.prototype.ng = '#666';
 
 Site.prototype.check = function(id) {
   var url = this.data.urlToCheck;
-  var regex = new RegExp(ID_FIELD);
-  url = url.match(regex) ? url.replace(regex, id) : (url + id);
+  url = url.indexOf(ID_FIELD) > -1 ? url.replace(ID_FIELD, id) : (url + id);
 
   var self = this;
   self.div.style.backgroundColor = '#bbb';
-  params = {'url':url};
+  var params = {'url':url};
   if (this.data.condition != '') {
     params['cond'] = this.data.condition;
   }
 
   $.get(RETRIEVER, params, function(html) {
-     if (NOT_FOUND == html) {
-       availableCount++;
+    if (NOT_FOUND == html) {
+      availableCount++;
 
-       /*
-       var ok = document.createElement('span');
-       ok.className = 'ok';
-       ok.innerHTML = 'OK'; // TODO: 1.
-       self.msg.appendChild(ok);
-       */
-       self.div.style.backgroundColor = 'green';
+      /*
+      var ok = document.createElement('span');
+      ok.className = 'ok';
+      ok.innerHTML = 'OK'; // TODO: 1.
+      self.msg.appendChild(ok);
+      */
+      self.div.style.backgroundColor = 'green';
 
-     } else {
-       if (FOUND == html) {
-         //search = data.evaluate(items[i].condition, data, null, 7, null)
-         //if (0 < search.snapshotLength) {
-           //debug('xpath hit');
-           //white.push(i);
-         //} else
-         {
-           self.div.style.backgroundColor = 'red';
-           /*
-           var ok = document.createElement('span');
-           ok.className = 'ng';
-           ok.innerHTML = 'NG'; // TODO: 1.
-           self.msg.appendChild(ok);
-           */
-         }
-       } else {
-         // check XPath
-         src = html;
-         cond = self.data.condition;
-       }
-     }
-     count++;
-     updateResult();
+    } else if (FOUND == html) {
+      //search = data.evaluate(items[i].condition, data, null, 7, null)
+      //if (0 < search.snapshotLength) {
+        //debug('xpath hit');
+        //white.push(i);
+      //} else
+      {
+        self.div.style.backgroundColor = 'red';
+        /*
+        var ok = document.createElement('span');
+        ok.className = 'ng';
+        ok.innerHTML = 'NG'; // TODO: 1.
+        self.msg.appendChild(ok);
+        */
+      }
+    } else {
+      // check XPath
+      src = html;
+      cond = self.data.condition;
+    }
+    count++;
+    updateResult();
   });
-}
+};
 
 function bootstrap() {
   out = document.getElementById('out');
@@ -108,7 +105,7 @@ function bootstrap() {
 
   $.getJSON(ITEMS_URL, function(sites) {
     totalCount = sites.length;
-    for (var i=0; i<sites.length; i++) {
+    for (var i=0, l=sites.length; i<l; i++) {
       items.push(new Site(sites[i].name, sites[i].data));
     }
   });
@@ -119,9 +116,9 @@ function checkId() {
   count = 0;
 
   id = document.forms[0]['id'].value;
-  debug('checking ' + id + ' from ' + totalCount + ' sites...');
+  debug('checking ' + id + ' from ' + totalCount + ' site' + (totalCount > 1 ? 's' : '') + '...');
 
-  for (var i=0; i<items.length; i++) {
+  for (var i=0, l=items.length; i<l; i++) {
     items[i].check(id);
   }
 
@@ -131,7 +128,7 @@ function checkId() {
 function updateResult() {
   //result.innerHTML = availableCount + '/' + items.length;
   if (totalCount == count) {
-    debug('done.<br /> <span class="id">' + id + ' </span> ' +
+    debug('done.<br /><span class="id">' + id + '</span> ' +
       'is <span class="availability">' + parseInt(100 * availableCount / items.length) + '</span>% available.');
   }
 }

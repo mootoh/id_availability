@@ -1,17 +1,17 @@
 body {
   margin: 0;
   padding: 0;
-  font-family:'Lucida Grande',sans-serif;
+  font-family: 'Lucida Grande', sans-serif;
 }
 
 a:link {
   color: #9cf;
 }
- 
+
 a:visited {
   color: #9cf;
 }
-  
+
 a:hover {
   color: #fff;
 }
@@ -19,7 +19,7 @@ a:hover {
 div#head {
   margin: 0;
   padding: 0;
-  width:100%;
+  width: 100%;
   background-color: #036;
 }
 
@@ -40,7 +40,7 @@ div#main {
 }
 
 div#input {
-  border-bottom: #036 solid 1px;
+  border-bottom: 1px solid #036;
 }
 
 div.site {

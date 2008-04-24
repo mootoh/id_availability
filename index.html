@@ -9,9 +9,7 @@
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="idavailability.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      bootstrap();
-    });
+    $(document).ready(bootstrap);
   </script>
 </head>
 <body>
@@ -24,17 +22,17 @@
   <h1>ID Availability</h1>
 </div>
 <div id="main">
-    <div id="input">
+  <div id="input">
     <p>Check the availability of your ID for various sites.</p>
     <form onsubmit="return checkId();">
-      <label>ID: </label>
+      <label for="id">ID:</label>
       <input type="text" name="id" />
       <input type="button" value="check !" onclick="return checkId();" />
     </form>
   </div>
   <div id="out"></div>
   <div id="result_out">
-      <span id="result"></span>
+    <span id="result"></span>
   </div>
   <h2>Sites:</h2>
   <p><span style="color:green; background-color:green">&nbsp;&nbsp;</span> is available, and
