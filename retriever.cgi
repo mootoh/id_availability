@@ -9,7 +9,7 @@ cgi  = CGI.new
 url  = URI.parse(cgi['url'])
 cond = cgi['cond']
 
-response = Net::HTTP.start(url.host) do |http|
+response = Net::HTTP.start(url.to_s) do |http|
   res = http.get(url.path, 'User-Agent' => 'IDAvailabilityRetriever/1.0')
   unless res.is_a?(Net::HTTPSuccess)
     print 'null'
